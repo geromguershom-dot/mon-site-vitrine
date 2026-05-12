@@ -1,60 +1,41 @@
-import React from 'react';
-import { MapPin, Mail, Phone } from 'lucide-react';
+import React, { useRef } from 'react';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+    emailjs.sendForm(
+      'service_mw306dm', 
+      'template_x1r6f7b', 
+      form.current, 
+      'PebyEJkWbsaCKT7Ir'
+    )
+    .then(() => {
+      alert("Félicitations Nama ! Ton message a été envoyé.");
+      e.target.reset();
+    }, (error) => {
+      alert("Erreur lors de l'envoi.");
+    });
+  };
+
   return (
-    <section id="contact" className="py-24 bg-indigo-900 text-white scroll-mt-20">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          
-          <div>
-            <h2 className="text-4xl font-bold mb-6">Prêt à donner vie à votre projet ?</h2>
-            <p className="text-indigo-100 text-lg mb-8">
-              Discutons de vos objectifs et voyons comment nous pouvons vous aider à les atteindre.
-            </p>
-            <div className="space-y-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-indigo-800 rounded-xl text-indigo-200">
-                  <MapPin size={24} />
-                </div>
-                <span>Yaoundé, Cameroun</span>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-indigo-800 rounded-xl text-indigo-200">
-                  <Mail size={24} />
-                </div>
-                <span>contact@vitrinepro.com</span>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-indigo-800 rounded-xl text-indigo-200">
-                  <Phone size={24} />
-                </div>
-                <span>+237 600 000 000</span>
-              </div>
-            </div>
+    <section id="contact" className="py-24 bg-white">
+      <div className="max-w-3xl mx-auto px-6 text-center">
+        <h2 className="text-4xl font-extrabold text-gray-900 mb-4">Parlons de votre projet</h2>
+        <p className="text-gray-500 mb-12 text-lg">Nama Nkoa Guershom est à votre écoute pour vos besoins digitaux.</p>
+        
+        <form ref={form} onSubmit={sendEmail} className="space-y-6 text-left bg-gray-50 p-10 rounded-3xl border border-gray-100 shadow-sm">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <input type="text" name="from_name" placeholder="Votre nom" required className="w-full p-4 rounded-xl border-gray-200 outline-indigo-500 shadow-inner" />
+            <input type="email" name="user_email" placeholder="Votre email" required className="w-full p-4 rounded-xl border-gray-200 outline-indigo-500 shadow-inner" />
           </div>
-
-          <div className="bg-white p-8 rounded-3xl shadow-2xl text-gray-900">
-            <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-              <div>
-                <label className="block text-sm font-semibold mb-2 text-gray-700">Nom complet</label>
-                <input type="text" className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition" placeholder="Votre nom" />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold mb-2 text-gray-700">Email</label>
-                <input type="email" className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition" placeholder="nom@exemple.com" />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold mb-2 text-gray-700">Message</label>
-                <textarea className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition h-32" placeholder="Décrivez votre besoin..."></textarea>
-              </div>
-              <button className="w-full bg-indigo-600 text-white font-bold py-4 rounded-xl hover:bg-indigo-700 transition shadow-lg shadow-indigo-200 active:scale-95">
-                Envoyer le message
-              </button>
-            </form>
-          </div>
-
-        </div>
+          <textarea name="message" placeholder="Votre message..." required className="w-full p-4 rounded-xl border-gray-200 h-40 outline-indigo-500 shadow-inner"></textarea>
+          <button type="submit" className="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-indigo-700 transition shadow-lg">
+            Envoyer le message
+          </button>
+        </form>
       </div>
     </section>
   );
